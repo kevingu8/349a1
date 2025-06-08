@@ -13,6 +13,7 @@ import { DisplayList } from "./drawbles/displaylist";
 import { Bubble } from "./drawbles/bubble";
 import { longclickTranslator } from "./translators/longclick";
 import { cursorCircle } from "./drawbles/cursorCircle";
+import { animateClick } from "./animations/animate_click";
 const canvasinfo = startSimpleKit();
 
 if (!canvasinfo) throw new Error("simplekit failed");
@@ -191,7 +192,19 @@ function text(
 }
 
 let mx = 0, my = 0;
+const click_animator = animateClick((value: number) => {
+  cursor_circle.r = (x_right.x - origin.x) * value;
+  if (value === 0.05) {
+    mouse_click = false;
+    cursor_circle.r = 0;
+  }
+})
 
+
+
+setSKAnimationCallback((time) => {
+  click_animator.update(time);
+})
 
 addSKEventTranslator(longclickTranslator);
 
@@ -216,7 +229,8 @@ const handleEvent = (e: SKEvent) => {
       mouse_click = true;
       cursor_circle.x = mx;
       cursor_circle.y = my;
-      cursor_circle.r = (x_right.x - origin.x) * 0.025;
+      // cursor_circle.r = (x_right.x - origin.x) * 0.025;
+      click_animator.start(skTime);
       if (mode === "setup" || mode === "pause") {
         mode = "play";
       } else if (mode === "play") {
@@ -326,3 +340,7 @@ const handleEvent = (e: SKEvent) => {
   }
 };
 setSKEventListener(handleEvent);
+
+// setSKAnimationCallback((time) => {
+  
+// });
