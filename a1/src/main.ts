@@ -20,33 +20,41 @@ type coordinates = {
   y: number;
 };
 
-let mode : "setup" | "play" | "pause" | "end" = "setup";
+let mode: "setup" | "play" | "pause" | "end" = "setup";
 let num_bubbles: number = 6;
 
 let canvas_width = canvasinfo.width;
 let canvas_height = canvasinfo.height;
 
 const margin = 50;
+const max_bubbles = 10;
+const min_bubbles = 2;
+const min_g = 0.125;
+const max_g = 1.0;
+
 let center: coordinates = { x: canvas_width / 2, y: canvas_height / 2 };
 let dist: number = Math.min(canvas_width, canvas_height) / 2 - margin;
 let origin = { x: center.x - dist, y: center.y + dist };
-let x_right = { x: center.x + dist, y: center.y + dist};
+let x_right = { x: center.x + dist, y: center.y + dist };
 let y_top = { x: center.x - dist, y: center.y - dist };
+let g = 0.5;
 
 const bubbles_list: DisplayList = new DisplayList();
 const initialize = () => {
   bubbles_list.clear();
   for (let i = 0; i < num_bubbles; i++) {
-    bubbles_list.add(new Bubble({
-      x: origin.x + Math.random() * (x_right.x - origin.x) / 2,
-      y: origin.y - Math.random() * (origin.y - y_top.y) / 2,
-      radius: 2 * dist * (0.0125 + Math.random() * (0.0375 - 0.0125)),
-      fill: `hsl(${Math.random() * 360}, 100%, 50%)`,
-      is_hovered: false,
-      index: i + 1,
-    }))
+    bubbles_list.add(
+      new Bubble({
+        x: origin.x + (Math.random() * (x_right.x - origin.x)) / 2,
+        y: origin.y - (Math.random() * (origin.y - y_top.y)) / 2,
+        radius: 2 * dist * (0.0125 + Math.random() * (0.0375 - 0.0125)),
+        fill: `hsl(${Math.random() * 360}, 100%, 50%)`,
+        is_hovered: false,
+        index: i + 1,
+      })
+    );
   }
-}
+};
 
 if (mode === "setup") {
   initialize();
@@ -59,7 +67,7 @@ setSKDrawCallback((gc) => {
   center = { x: canvas_width / 2, y: canvas_height / 2 };
   dist = Math.min(canvas_width, canvas_height) / 2 - margin;
   origin = { x: center.x - dist, y: center.y + dist };
-  x_right = { x: center.x + dist, y: center.y + dist};
+  x_right = { x: center.x + dist, y: center.y + dist };
   y_top = { x: center.x - dist, y: center.y - dist };
 
   gc.fillStyle = "black";
@@ -107,14 +115,8 @@ setSKDrawCallback((gc) => {
   gc.strokeStyle = "white";
   gc.lineWidth = 2;
   gc.beginPath();
-  gc.moveTo(
-    (x_right.x + origin.x - 10)/2,
-    origin.y
-  );
-  gc.lineTo(
-    (x_right.x + origin.x - 10)/2,
-    origin.y + 10
-  );
+  gc.moveTo((x_right.x + origin.x - 10) / 2, origin.y);
+  gc.lineTo((x_right.x + origin.x - 10) / 2, origin.y + 10);
   gc.closePath();
 
   gc.stroke();
@@ -139,14 +141,8 @@ setSKDrawCallback((gc) => {
   gc.strokeStyle = "white";
   gc.lineWidth = 2;
   gc.beginPath();
-  gc.moveTo(
-    origin.x,
-    (origin.y + y_top.y) / 2
-  );
-  gc.lineTo(
-    origin.x - 10,
-    (origin.y + y_top.y) / 2
-  );
+  gc.moveTo(origin.x, (origin.y + y_top.y) / 2);
+  gc.lineTo(origin.x - 10, (origin.y + y_top.y) / 2);
   gc.closePath();
 
   gc.stroke();
@@ -165,25 +161,13 @@ setSKDrawCallback((gc) => {
   gc.restore();
 
   text(gc, x_right.x, x_right.y + 25, "100");
-  text(
-    gc,
-    (x_right.x + origin.x - 10)/2,
-    origin.y + 25,
-    "50"
-  );
+  text(gc, (x_right.x + origin.x - 10) / 2, origin.y + 25, "50");
   text(gc, origin.x - 25, origin.y, "0");
-  text(gc, origin.x, origin.y + 25, "0")
-  text(gc, origin.x - 25,
-    (origin.y + y_top.y) / 2, "50");
-  text(
-    gc,
-    origin.x - 25, y_top.y,
-    "100"
-  );
-
+  text(gc, origin.x, origin.y + 25, "0");
+  text(gc, origin.x - 25, (origin.y + y_top.y) / 2, "50");
+  text(gc, origin.x - 25, y_top.y, "100");
 
   bubbles_list.draw(gc);
-
 });
 
 function text(
@@ -207,18 +191,79 @@ function text(
   gc.fillText(text, x, y);
 }
 
-
 addSKEventTranslator(longclickTranslator);
 
 const handleEvent = (e: SKEvent) => {
   switch (e.type) {
     case "longclick":
-        if (mode === "setup") {
-          initialize();
-        }
-        break;
+      if (mode === "play" || mode === "pause" || mode === "end") {
+        mode = "setup";
+        initialize();
+      }
+      break;
 
-    
+    case "click":
+      if (mode === "setup" || mode === "pause") {
+        mode = "play";
+      } else if (mode === "play") {
+        mode = "pause";
+      }
+      break;
+
+    case "keydown":
+      const { key } = e as KeyboardEvent;
+      switch (key) {
+        case "Enter":
+          mode = "setup";
+          initialize();
+          break;
+
+        case "Escape":
+          if (mode === "end" || mode === "setup") {
+            mode = "setup";
+            initialize();
+          }
+          break;
+
+        case " ":
+          if (mode === "setup" || mode === "pause") {
+            mode = "play";
+          } else if (mode === "play") {
+            mode = "pause";
+          }
+          break;
+      }
+      if (mode === "setup") {
+        switch (key) {
+          case "[":
+            if (num_bubbles > min_bubbles) {
+              num_bubbles--;
+              initialize();
+            }
+            break;
+
+          case "]":
+            if (num_bubbles < max_bubbles) {
+              num_bubbles++;
+              initialize();
+            }
+            break;
+
+          case "{":
+            if (g > min_g) {
+              g -= 0.125;
+              initialize();
+            }
+            break;
+
+          case "}":
+            if (g < max_g) {
+              g += 0.125;
+              initialize();
+            }
+            break;
+        }
+      }
   }
-}
+};
 setSKEventListener(handleEvent);
