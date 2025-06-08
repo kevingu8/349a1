@@ -34,4 +34,9 @@ export class Bubble extends Circle {
             gc.restore();
         }
     }
+
+    update(time: number, g: number, l: number): void {
+        const v = l * 0.000125
+        const rand = Math.random();
+    }
 }
