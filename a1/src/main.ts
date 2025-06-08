@@ -6,6 +6,7 @@ import {
   addSKEventTranslator,
   skTime,
   SKEvent,
+  SKMouseEvent,
 } from "simplekit/canvas-mode";
 
 import { DisplayList } from "./drawbles/displaylist";
@@ -183,6 +184,8 @@ function text(
   gc.fillText(text, x, y);
 }
 
+let mx = 0, my = 0;
+
 addSKEventTranslator(longclickTranslator);
 
 const handleEvent = (e: SKEvent) => {
@@ -202,8 +205,11 @@ const handleEvent = (e: SKEvent) => {
       }
       break;
     
-      case "mousedown":
-        
+    case "mousedown":
+      ({x: mx, y: my } = e as SKMouseEvent);
+      bubbles_list.list.forEach((b) => {
+        if (b.hittest(mx, my))
+      })
 
     case "keydown":
       const { key } = e as KeyboardEvent;
