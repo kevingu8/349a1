@@ -1,4 +1,4 @@
-import type { Drawable } from './drawable';
+import { Drawable } from './drawable';
 
 export class DisplayList {
   list: Drawable[] = [];

@@ -1,4 +1,4 @@
-import { Circle, type CircleProps } from './circle.js';
+import { Circle, CircleProps } from './circle.js';
 
 type BubbleProps = CircleProps & { is_hovered?: boolean, index?: number };
 
