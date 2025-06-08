@@ -45,9 +45,9 @@ const initialize = () => {
   for (let i = 0; i < num_bubbles; i++) {
     bubbles_list.add(
       new Bubble({
-        x: origin.x + (Math.random() * (x_right.x - origin.x)) / 2,
-        y: origin.y - (Math.random() * (origin.y - y_top.y)) / 2,
-        radius: 2 * dist * (0.0125 + Math.random() * (0.0375 - 0.0125)),
+        x_rel: Math.random(),
+        y_rel: Math.random(),
+        radius_rel: 0.0125 + Math.random() * (0.0375 - 0.0125),
         fill: `hsl(${Math.random() * 360}, 100%, 50%)`,
         is_hovered: false,
         index: i + 1,

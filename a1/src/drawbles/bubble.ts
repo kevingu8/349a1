@@ -7,20 +7,21 @@ export class Bubble extends Circle {
     index: number = 0;
 
     constructor({
-        x = 0,
-        y = 0,
-        radius = 100,
+        x_rel = 0,
+        y_rel = 0,
+        radius_rel = 0,
         fill = 'grey',
         is_hovered = true,
         index = 0,
     }: BubbleProps = {}) {
-        super({ x, y, radius, fill });
+        super({ x_rel, y_rel, radius_rel, fill });
         this.is_hovered = is_hovered;
         this.index = index;
     }
     
     draw(gc: CanvasRenderingContext2D): void {
-
+        // Get the absolute position and radius
+        const { x, y, radius } = this.get_info(gc);
         // Draw the index number above the circle (if hover)
         if (this.is_hovered) {
             this.stroke = "lightblue";
@@ -30,7 +31,7 @@ export class Bubble extends Circle {
             gc.textAlign = "center";
             gc.textBaseline = "middle";
             gc.fillStyle = this.stroke;
-            gc.fillText(this.index.toString(), this.x, this.y - this.radius - 15);
+            gc.fillText(this.index.toString(), x, y - radius - 15);
             gc.restore();
         }
 
@@ -38,51 +39,51 @@ export class Bubble extends Circle {
         super.draw(gc);
     }
 
-    update(time: number, g: number, l: number): void {
-        const v = l * 0.000125
+    update(time: number, g: number): void {
+        const v = 0.000125
         const rand = Math.random();
         if (rand <= g) {
             // NE
-            this.x = this.x + v * time;
-            this.y = this.y - v * time;
+            this.x_rel = this.x_rel + v * time;
+            this.y_rel = this.y_rel - v * time;
         } else {
             const c = Math.floor((1 - g) / 7) + 1;
             switch(c) {
                 case 1:
                     // E
-                    this.x = this.x + v * time;
+                    this.x_rel = this.x_rel + v * time;
                     break;
                 case 2:
                     // SE
-                    this.x = this.x + v * time;
-                    this.y = this.y + v * time;
+                    this.x_rel = this.x_rel + v * time;
+                    this.y_rel = this.y_rel + v * time;
                     break;
 
                 case 3:
                     // S
-                    this.y = this.y + v * time;
+                    this.y_rel = this.y_rel + v * time;
                     break;
 
                 case 4:
                     // SW
-                    this.x = this.x - v * time;
-                    this.y = this.y + v * time;
+                    this.x_rel = this.x_rel - v * time;
+                    this.y_rel = this.y_rel + v * time;
                     break;
 
                 case 5:
                     // W
-                    this.x = this.x - v * time;
+                    this.x_rel = this.x_rel - v * time;
                     break;
 
                 case 6:
                     // NW
-                    this.x = this.x - v * time;
-                    this.y = this.y - v * time;
+                    this.x_rel = this.x_rel - v * time;
+                    this.y_rel = this.y_rel - v * time;
                     break;
 
                 case 7:
                     // N
-                    this.y = this.y - v * time;
+                    this.y_rel = this.y_rel - v * time;
                     break;
             }
         }
