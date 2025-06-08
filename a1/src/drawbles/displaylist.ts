@@ -1,14 +1,15 @@
-import { Drawable } from './drawable';
+import { Bubble } from "./bubble";
+
 
 export class DisplayList {
-  list: Drawable[] = [];
+  list: Bubble[] = [];
 
-  add(drawable: Drawable) {
-    this.list = [...this.list, drawable];
+  add(bubble: Bubble) {
+    this.list = [...this.list, bubble];
   }
 
-  remove(drawable: Drawable) {
-    this.list = this.list.filter((d) => d !== drawable);
+  remove(bubble: Bubble) {
+    this.list = this.list.filter((d) => d !== bubble);
   }
 
   clear() {
