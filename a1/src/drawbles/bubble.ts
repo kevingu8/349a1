@@ -14,7 +14,7 @@ export class Bubble extends Circle {
   private x_right: { x: number; y: number } = { x: 0, y: 0 };
   private y_top: { x: number; y: number } = { x: 0, y: 0 };
 
-  start_time: number = 0;
+  time_pos_lst: { time: number; x_rel: number; y_rel: number }[] = [];
   constructor({
     x_rel = 0,
     y_rel = 0,
@@ -50,91 +50,102 @@ export class Bubble extends Circle {
       gc.fillText(this.index.toString(), x, y - radius - 5);
       gc.restore();
     }
+    
 
     // Draw the circle
     super.draw(gc);
   }
 
   start(time: number): void {
-    this.start_time = time;
-    // this.x = this.x_rel;
-    // this.y = this.y_rel;
+    this.time_pos_lst.push({
+      time: time,
+      x_rel: this.x_rel,
+      y_rel: this.y_rel,
+    })
   }
 
   update(current_time: number, g: number): void {
-    // const time = current_time - this.start_time; // Convert to seconds
-    const v = 0.75 * 0.000125 * 2; // relative scaled to /2, multiply back
+    const last_tp = this.time_pos_lst[this.time_pos_lst.length - 1];
+    const time = current_time - last_tp.time;
+    const v = 0.75 * 0.000125 * 2; // relative scaled to / 2, multiply back
     const rand = Math.random();
     if (rand <= g) {
       // NE
-      if (this.x_rel < 2) {
-        this.x_rel += v;
+      if (this.x < this.x_right.x) {
+        this.x_rel = last_tp.x_rel + v * time;
       }
 
-      if (this.y_rel < 2) {
-        this.y_rel += v;
+      if (this.y > this.y_top.y) {
+        this.y_rel = last_tp.y_rel + v * time;
       }
+
     } else {
-      const c = Math.floor((1 - g) * 7) + 1;
+      const c = Math.floor((1 - rand) * 7) + 1;
+      console.log("c", c);
       switch (c) {
         case 1:
           // E
-          if (this.x_rel < 2) {
-            this.x_rel += v;
+          if (this.x < this.x_right.x) {
+            this.x_rel = last_tp.x_rel + v * time;
           }
           break;
         case 2:
           // SE
-          if (this.x_rel < 2) {
-            this.x_rel += v;
+          if (this.x < this.x_right.x) {
+            this.x_rel = last_tp.x_rel + v * time;
           }
           
-          if (this.y_rel > 0) {
-            this.y_rel -= v;
+          if (this.y < this.y_top.y) {
+            this.y_rel = last_tp.y_rel - v * time;
           }
           break;
 
         case 3:
           // S
-          if (this.y_rel > 0) {
-            this.y_rel -= v;
+          if (this.y < this.y_top.y) {
+            this.y_rel = last_tp.y_rel - v * time;
           }
           break;
 
         case 4:
           // SW
-          if (this.x_rel > 0) {
-            this.x_rel -= v;
+          if (this.x > this.x_right.x) {
+            this.x_rel = last_tp.x_rel - v * time;
           }
-          if (this.y_rel > 0) {
-            this.y_rel -= v;
+          if (this.y < this.y_top.y) {
+            this.y_rel = last_tp.y_rel - v * time;
           }
           break;
 
         case 5:
           // W
-          if (this.x_rel > 0) {
-            this.x_rel = this.x - v;
+          if (this.x > this.x_right.x) {
+            this.x_rel = last_tp.x_rel - v * time;
           }
           break;
 
         case 6:
           // NW
-          if (this.x_rel > 0) {
-            this.x_rel = this.x - v;
+          if (this.x > this.x_right.x) {
+            this.x_rel = last_tp.x_rel - v * time;
           }
-          if (this.y_rel < 2) {
-            this.y_rel = this.y + v;
+          if (this.y > this.y_top.y) {
+            this.y_rel = last_tp.y_rel + v * time;
           }
           break;
 
         case 7:
           // N
-          if (this.y_rel < 2) {
-            this.y_rel = this.y + v;
+          if (this.y > this.y_top.y) {
+            this.y_rel = last_tp.y_rel + v * time;
           }
           break;
       }
+      this.time_pos_lst.push({
+        time: current_time,
+        x_rel: this.x_rel,
+        y_rel: this.y_rel,
+      });
     }
   }
 
