@@ -1,9 +1,9 @@
 import { Circle, type CircleProps } from './circle.js';
 
-type BubbleProps = CircleProps & { display_index?: boolean, index?: number };
+type BubbleProps = CircleProps & { is_hovered?: boolean, index?: number };
 
 export class Bubble extends Circle {
-    display_index: boolean = true;
+    is_hovered: boolean = true;
     index: number = 0;
 
     constructor({
@@ -11,32 +11,41 @@ export class Bubble extends Circle {
         y = 0,
         radius = 100,
         fill = 'grey',
-        display_index = true,
+        is_hovered = true,
         index = 0,
     }: BubbleProps = {}) {
         super({ x, y, radius, fill });
-        this.display_index = display_index;
+        this.is_hovered = is_hovered;
         this.index = index;
     }
     
     draw(gc: CanvasRenderingContext2D): void {
-        // Draw the circle
-        super.draw(gc);
 
         // Draw the index number above the circle (if hover)
-        if (this.display_index) {
+        if (this.is_hovered) {
+            this.stroke = "lightblue";
+
             gc.save();
             gc.font = "12px sans-serif"
             gc.textAlign = "center";
             gc.textBaseline = "middle";
-            gc.fillStyle = "lightblue";
+            gc.fillStyle = this.stroke;
             gc.fillText(this.index.toString(), this.x, this.y - this.radius - 15);
             gc.restore();
         }
+
+        // Draw the circle
+        super.draw(gc);
     }
 
     update(time: number, g: number, l: number): void {
         const v = l * 0.000125
         const rand = Math.random();
+        if (rand <= g) {
+            this.x = this.x + v * time;
+            this.y = this.y - v * time;
+        } else {
+            
+        }
     }
 }
