@@ -12,6 +12,7 @@ import {
 import { DisplayList } from "./drawbles/displaylist";
 import { Bubble } from "./drawbles/bubble";
 import { longclickTranslator } from "./translators/longclick";
+import { cursorCircle } from "./drawbles/cursorCircle";
 const canvasinfo = startSimpleKit();
 
 if (!canvasinfo) throw new Error("simplekit failed");
@@ -24,6 +25,7 @@ type coordinates = {
 let mode: "setup" | "play" | "pause" | "end" = "setup";
 let bgc = "black";
 let num_bubbles: number = 6;
+let globalGC: CanvasRenderingContext2D | null = null;
 
 let canvas_width = canvasinfo.width;
 let canvas_height = canvasinfo.height;
@@ -63,6 +65,7 @@ if (mode === "setup") {
 }
 
 setSKDrawCallback((gc) => {
+  globalGC = gc
   gc.clearRect(0, 0, gc.canvas.width, gc.canvas.height);
   canvas_width = gc.canvas.width;
   canvas_height = gc.canvas.height;
@@ -184,6 +187,10 @@ function text(
 
 let mx = 0, my = 0;
 
+const cursor = new cursorCircle(
+  mx, my, 0
+);
+
 addSKEventTranslator(longclickTranslator);
 
 const handleEvent = (e: SKEvent) => {
@@ -196,6 +203,17 @@ const handleEvent = (e: SKEvent) => {
       break;
 
     case "click":
+      ({x: mx, y: my} = e as SKMouseEvent);
+
+      if (mx <= x_right.x - origin.x && my <= y_top.y - origin.y) {
+        if (globalGC) {
+          cursor.r = (x_right.x - origin.x) * 0.0025
+          cursor.x = mx;
+          cursor.y = my;
+          globalGC.arc(cursor.x, cursor.y, cursor.r, 0, 2 * Math.PI)
+          globalGC.stroke()
+        }
+      }
       if (mode === "setup" || mode === "pause") {
         mode = "play";
       } else if (mode === "play") {

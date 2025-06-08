@@ -17,7 +17,12 @@ export class cursorCircle {
 
     draw(gc: CanvasRenderingContext2D) {
         gc.beginPath();
-        
+        if (this.stroke) gc.strokeStyle = this.stroke
+        if (this.lineWidth) gc.lineWidth = this.lineWidth;
+
+        gc.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+
+        gc.stroke();
     }
 
 }
