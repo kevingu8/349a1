@@ -270,6 +270,7 @@ const handleEvent = (e: SKEvent) => {
           b.stroke = "yellow";
           b.lineWidth = 3;
           got_hit = true;
+          b.draw_tail = true;
         }
       })
 
@@ -284,13 +285,21 @@ const handleEvent = (e: SKEvent) => {
         if (b.hittest(mx, my)) {
           b.stroke = "lightblue";
           b.lineWidth = 2;
+          b.draw_tail = false;
         }
       })
       bgc = "black";
       break;
-
+    
+    case "keyup":
+      bubbles_list.list.forEach((b) => {
+        b.draw_tail = false;
+      })
+      break;
+      
     case "keydown":
       const { key } = e as KeyboardEvent;
+
       switch (key) {
         case "Enter":
           if (mode === "end" || mode === "setup")
@@ -312,7 +321,12 @@ const handleEvent = (e: SKEvent) => {
             mode = "pause";
           }
           break;
-          
+        
+        case "t":
+          bubbles_list.list.forEach((b) => {
+            b.draw_tail = true;
+          })
+          break;
       }
       if (mode === "setup") {
         switch (key) {

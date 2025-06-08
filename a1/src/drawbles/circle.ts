@@ -53,7 +53,8 @@ export class Circle implements Drawable {
       y: origin.y - (origin.y - y_top.y) * this.y_rel / 2,
       radius: 2 * dist * this.radius_rel,
       x_right: x_right,
-      y_top: y_top
+      y_top: y_top,
+      origin: origin
     }
   }
   

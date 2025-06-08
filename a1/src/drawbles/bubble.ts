@@ -1,11 +1,12 @@
 import { Circle, CircleProps } from "./circle.js";
 import { insideHitTestCircle } from "../hittest/hittest";
 
-type BubbleProps = CircleProps & { is_hovered?: boolean; index?: number };
+type BubbleProps = CircleProps & { is_hovered?: boolean; draw_tail?: boolean; index?: number };
 
 export class Bubble extends Circle {
   is_hovered: boolean = true;
   index: number = 0;
+  draw_tail: boolean = false;
 
   private x: number = 0;
   private y: number = 0;
@@ -21,16 +22,18 @@ export class Bubble extends Circle {
     radius_rel = 0,
     fill = "grey",
     is_hovered = true,
+    draw_tail = false,
     index = 0,
   }: BubbleProps = {}) {
     super({ x_rel, y_rel, radius_rel, fill });
     this.is_hovered = is_hovered;
     this.index = index;
+    this.draw_tail = draw_tail;
   }
 
   draw(gc: CanvasRenderingContext2D): void {
     // Get the absolute position and radius
-    const { x, y, radius, x_right, y_top } = this.get_info(gc);
+    const { x, y, radius, x_right, y_top, origin } = this.get_info(gc);
     this.x = x;
     this.y = y;
     this.radius = radius;
@@ -51,6 +54,25 @@ export class Bubble extends Circle {
       gc.restore();
     }
     
+    if (this.draw_tail) {
+      // Draw the tail
+      gc.save();
+      gc.strokeStyle = this.fill;
+      gc.lineWidth = 1;
+      gc.beginPath();
+      for (let i = 0; i < this.time_pos_lst.length; i++) {
+        const tp = this.time_pos_lst[i];
+        const x_tail = origin.x + (x_right.x - origin.x) * tp.x_rel / 2;
+        const y_tail = origin.y - (origin.y - y_top.y) * tp.y_rel / 2;
+        if (i === 0) {
+          gc.moveTo(x_tail, y_tail);
+        } else {
+          gc.lineTo(x_tail, y_tail);
+        }
+      }
+      gc.stroke();
+      gc.restore();
+    }
 
     // Draw the circle
     super.draw(gc);
