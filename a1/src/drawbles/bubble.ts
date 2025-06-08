@@ -65,7 +65,7 @@ export class Bubble extends Circle {
 
   update(current_time: number, g: number): void {
     const time = current_time - this.start_time; // Convert to seconds
-    const v = 0.000125 * 2; // relative scaled to /2, multiply back
+    const v = 0.75 * 0.000125 * 2; // relative scaled to /2, multiply back
     const rand = Math.random();
     if (rand <= g) {
       // NE
@@ -77,7 +77,7 @@ export class Bubble extends Circle {
         this.y_rel = this.y_rel_start + v * time;
       }
     } else {
-      const c = Math.floor((1 - g) / 7) + 1;
+      const c = Math.floor((1 - g) * 7) + 1;
       switch (c) {
         case 1:
           // E
