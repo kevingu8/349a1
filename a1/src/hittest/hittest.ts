@@ -1,9 +1,9 @@
 export function insideHitTestCircle(
     mx: number,
     my: number,
-    cx: number,
-    cy: number,
-    r: number 
+    x: number,
+    y: number,
+    radius: number 
 ): boolean {
-    return (mx-cx) ** 2 + (my - cy) ** 2 <= r ** 2
+    return (mx-x) ** 2 + (my - y) ** 2 <= radius ** 2
 }
