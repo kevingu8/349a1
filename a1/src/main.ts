@@ -208,7 +208,10 @@ const handleEvent = (e: SKEvent) => {
     case "mousedown":
       ({x: mx, y: my } = e as SKMouseEvent);
       bubbles_list.list.forEach((b) => {
-        if (b.hittest(mx, my))
+        if (b.hittest(mx, my)) {
+          b.stroke = "yellow";
+          b.lineWidth = 3;
+        }
       })
 
     case "keydown":
