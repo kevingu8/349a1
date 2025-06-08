@@ -204,6 +204,9 @@ const click_animator = animateClick((value: number) => {
 
 setSKAnimationCallback((time) => {
   click_animator.update(time);
+  if (mode === "play") {
+    bubbles_list.update(time, g);
+  }
 })
 
 addSKEventTranslator(longclickTranslator);
@@ -235,6 +238,7 @@ const handleEvent = (e: SKEvent) => {
 
       if (mode === "setup" || mode === "pause") {
         mode = "play";
+        bubbles_list.start(skTime);
       } else if (mode === "play") {
         mode = "pause";
       }

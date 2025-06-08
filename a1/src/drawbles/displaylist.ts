@@ -21,4 +21,16 @@ export class DisplayList {
       d.draw(gc);
     });
   }
+
+  start(time: number) {
+    this.list.forEach((d) => {
+      d.start(time);
+    });
+  }
+  
+  update(time: number, g: number) {
+    this.list.forEach((d) => {
+      d.update(time, g);
+    });
+  }
 }

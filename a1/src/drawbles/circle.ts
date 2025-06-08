@@ -37,6 +37,9 @@ export class Circle implements Drawable {
   fill: string;
   stroke: string;
   lineWidth: number;
+
+  private x_right: coordinates = { x: 0, y: 0 };
+  private y_top: coordinates = { x: 0, y: 0 };
   
 
   get_info(gc: CanvasRenderingContext2D) {
@@ -52,12 +55,17 @@ export class Circle implements Drawable {
       x: origin.x + (x_right.x - origin.x) * this.x_rel / 2,
       y: origin.y - (origin.y - y_top.y) * this.y_rel / 2,
       radius: 2 * dist * this.radius_rel,
+      x_right: x_right,
+      y_top: y_top
     }
   }
   
 
   draw(gc: CanvasRenderingContext2D) {
-    const { x, y, radius } = this.get_info(gc);
+    const { x, y, radius, x_right, y_top } = this.get_info(gc);
+    
+    this.x_right = x_right;
+    this.y_top = y_top;
     
     gc.beginPath();
     if (this.fill) gc.fillStyle = this.fill;
