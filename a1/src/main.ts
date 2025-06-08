@@ -226,11 +226,13 @@ const handleEvent = (e: SKEvent) => {
       //   cursor_circle.y = my;
       //   cursor_circle.r = (x_right.x - origin.x) * 0.0025;
       // }
-      mouse_click = true;
-      cursor_circle.x = mx;
-      cursor_circle.y = my;
-      // cursor_circle.r = (x_right.x - origin.x) * 0.025;
-      click_animator.start(skTime);
+      if (mx > origin.x && mx < x_right.x && my > y_top.y && my < origin.y) {
+        mouse_click = true;
+        cursor_circle.x = mx;
+        cursor_circle.y = my;
+        click_animator.start(skTime);
+      }
+
       if (mode === "setup" || mode === "pause") {
         mode = "play";
       } else if (mode === "play") {

@@ -10,6 +10,7 @@ export class Bubble extends Circle {
   private x: number = 0;
   private y: number = 0;
   private radius: number = 0;
+  private start_time: number = 0;
 
   constructor({
     x_rel = 0,
@@ -48,7 +49,12 @@ export class Bubble extends Circle {
     super.draw(gc);
   }
 
-  update(time: number, g: number): void {
+  start(time: number): void {
+    this.start_time = time;
+  }
+
+  update(current_time: number, g: number): void {
+    const time = current_time - this.start_time; // Convert to seconds
     const v = 0.000125;
     const rand = Math.random();
     if (rand <= g) {
