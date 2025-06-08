@@ -212,7 +212,9 @@ const handleEvent = (e: SKEvent) => {
           b.stroke = "yellow";
           b.lineWidth = 3;
         }
+
       })
+      break;
 
     case "keydown":
       const { key } = e as KeyboardEvent;
