@@ -176,15 +176,7 @@ function text(
   y: number,
   text: string
 ) {
-  // string uses same style as CSS font property
   gc.font = "12pt sans-serif";
-  // // standard alignment
-  // gc.textAlign = "left";
-  // gc.textBaseline = "alphabetic";
-  // gc.fillStyle = "blue";
-  // gc.fillText("Hello", x, y);
-
-  // fully centred alignment
   gc.textAlign = "center";
   gc.textBaseline = "middle";
   gc.fillStyle = "white";
