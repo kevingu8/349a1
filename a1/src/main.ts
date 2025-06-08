@@ -6,6 +6,9 @@ import {
   addSKEventTranslator,
   skTime,
 } from "simplekit/canvas-mode";
+
+import { DisplayList } from "./drawbles/displaylist";
+import { Bubble } from "./drawbles/bubble";
 const canvasinfo = startSimpleKit();
 
 if (!canvasinfo) throw new Error("simplekit failed");
@@ -15,19 +18,43 @@ type coordinates = {
   y: number;
 };
 
-let canvas_width = 0;
-let canvas_height = 0;
-let origin: coordinates = { x: canvas_width / 5, y: canvas_height - 100 };
-let x_right: coordinates = { x: canvas_width / 1.3, y: canvas_height - 100 };
-let y_top: coordinates = { x: canvas_width / 5, y: canvas_height / 7 };
+let mode : "setup" | "play" | "pause" | "end" = "setup";
+let num_bubbles: number = 6;
+
+let canvas_width = canvasinfo.width;
+let canvas_height = canvasinfo.height;
+
 const margin = 50;
+let center: coordinates = { x: canvas_width / 2, y: canvas_height / 2 };
+let dist: number = Math.min(canvas_width, canvas_height) / 2 - margin;
+let origin = { x: center.x - dist, y: center.y + dist };
+let x_right = { x: center.x + dist, y: center.y + dist};
+let y_top = { x: center.x - dist, y: center.y - dist };
+
+const bubbles_list: DisplayList = new DisplayList();
+const initialize = () => {
+  for (let i = 0; i < num_bubbles; i++) {
+    bubbles_list.add(new Bubble({
+      x: origin.x + Math.random() * (x_right.x - origin.x) / 2,
+      y: origin.y - Math.random() * (origin.y - y_top.y) / 2,
+      radius: 2 * dist * (0.025 + Math.random() * (0.05 - 0.025)),
+      fill: `hsl(${Math.random() * 360}, 100%, 50%)`,
+      is_hovered: false,
+      index: i + 1,
+    }))
+  }
+}
+
+if (mode === "setup") {
+  initialize();
+}
 
 setSKDrawCallback((gc) => {
   gc.clearRect(0, 0, gc.canvas.width, gc.canvas.height);
   canvas_width = gc.canvas.width;
   canvas_height = gc.canvas.height;
-  const center: coordinates = { x: canvas_width / 2, y: canvas_height / 2 };
-  const dist: number = Math.min(canvas_width, canvas_height) / 2 - margin;
+  center = { x: canvas_width / 2, y: canvas_height / 2 };
+  dist = Math.min(canvas_width, canvas_height) / 2 - margin;
   origin = { x: center.x - dist, y: center.y + dist };
   x_right = { x: center.x + dist, y: center.y + dist};
   y_top = { x: center.x - dist, y: center.y - dist };
@@ -150,6 +177,10 @@ setSKDrawCallback((gc) => {
     origin.x - 25, y_top.y,
     "100"
   );
+
+
+  bubbles_list.draw(gc);
+
 });
 
 function rectangleDemo(gc: CanvasRenderingContext2D) {

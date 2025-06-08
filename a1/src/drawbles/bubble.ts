@@ -42,10 +42,50 @@ export class Bubble extends Circle {
         const v = l * 0.000125
         const rand = Math.random();
         if (rand <= g) {
+            // NE
             this.x = this.x + v * time;
             this.y = this.y - v * time;
         } else {
-            
+            const c = Math.floor((1 - g) / 7) + 1;
+            switch(c) {
+                case 1:
+                    // E
+                    this.x = this.x + v * time;
+                    break;
+                case 2:
+                    // SE
+                    this.x = this.x + v * time;
+                    this.y = this.y + v * time;
+                    break;
+
+                case 3:
+                    // S
+                    this.y = this.y + v * time;
+                    break;
+
+                case 4:
+                    // SW
+                    this.x = this.x - v * time;
+                    this.y = this.y + v * time;
+                    break;
+
+                case 5:
+                    // W
+                    this.x = this.x - v * time;
+                    break;
+
+                case 6:
+                    // NW
+                    this.x = this.x - v * time;
+                    this.y = this.y - v * time;
+                    break;
+
+                case 7:
+                    // N
+                    this.y = this.y - v * time;
+                    break;
+            }
         }
+        
     }
 }
