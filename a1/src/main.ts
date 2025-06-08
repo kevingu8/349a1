@@ -161,18 +161,18 @@ setSKDrawCallback((gc) => {
   gc.stroke();
   gc.restore();
 
-  textDemo(gc, x_right.x, x_right.y + 25, "100");
-  textDemo(
+  text(gc, x_right.x, x_right.y + 25, "100");
+  text(
     gc,
     (x_right.x + origin.x - 10)/2,
     origin.y + 25,
     "50"
   );
-  textDemo(gc, origin.x - 25, origin.y, "0");
-  textDemo(gc, origin.x, origin.y + 25, "0")
-  textDemo(gc, origin.x - 25,
+  text(gc, origin.x - 25, origin.y, "0");
+  text(gc, origin.x, origin.y + 25, "0")
+  text(gc, origin.x - 25,
     (origin.y + y_top.y) / 2, "50");
-  textDemo(
+  text(
     gc,
     origin.x - 25, y_top.y,
     "100"
@@ -183,63 +183,7 @@ setSKDrawCallback((gc) => {
 
 });
 
-function rectangleDemo(gc: CanvasRenderingContext2D) {
-  gc.fillStyle = "red";
-  gc.fillRect(70, 10, 50, 50);
-
-  gc.strokeStyle = "blue";
-  gc.strokeRect(80, 20, 50, 50);
-
-  // stacking to make more complex shapes
-  gc.lineWidth = 3;
-  gc.fillRect(150, 20, 50, 50);
-  gc.strokeRect(150, 20, 50, 50);
-
-  // has no effect
-  gc.strokeStyle = "green";
-}
-
-//#endregion
-
-//#region pathDemo
-// pathDemo draws lines, polygons, and circles
-
-function pathDemo(gc: CanvasRenderingContext2D) {
-  gc.lineWidth = 3;
-
-  // line
-  gc.strokeStyle = "black";
-  gc.beginPath();
-  gc.moveTo(10, 10);
-  gc.lineTo(60, 60);
-  gc.stroke();
-
-  // polyline or polygon
-  gc.strokeStyle = "green";
-  gc.beginPath();
-  gc.moveTo(100, 10);
-  gc.lineTo(150, 60);
-  gc.lineTo(100, 60);
-  gc.closePath(); // try commenting out
-  gc.stroke();
-
-  // circle using ellipse
-  gc.strokeStyle = "blue";
-  gc.beginPath();
-  gc.ellipse(200, 30, 25, 25, 0, 0, 2 * Math.PI);
-  gc.stroke();
-
-  // circle using arc
-  gc.strokeStyle = "red";
-  gc.beginPath();
-  gc.arc(200, 30, 20, 0, 2 * Math.PI);
-  gc.stroke();
-}
-
-//#region textDemo
-// textDemo shows how to draw text with different styles
-
-function textDemo(
+function text(
   gc: CanvasRenderingContext2D,
   x: number,
   y: number,
@@ -259,8 +203,3 @@ function textDemo(
   gc.fillStyle = "white";
   gc.fillText(text, x, y);
 }
-
-//#endregion
-
-//#region colourDemo
-// colourDemo shows how to use HSL colours
