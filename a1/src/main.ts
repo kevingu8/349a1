@@ -9,8 +9,21 @@ const canvasinfo = startSimpleKit()
 if (!canvasinfo) throw new Error("simplekit failed");
 
 
+type coordinates = {
+  x: number;
+  y: number;
+}
+
+let canvas_width = 0
+let canvas_height = 0 
+const origin:coordinates = {x: canvas_width/5, y: canvas_height - 100};
+const x_right:coordinates = {x: canvas_width/1.3 , y: canvas_height - 100}; 
+const y_top:coordinates = {x: canvas_width/5 , y: canvas_height/7}; 
+
 setSKDrawCallback((gc) => {
   gc.clearRect(0, 0, gc.canvas.width, gc.canvas.height);
+  canvas_width = gc.canvas.width
+  canvas_height = gc.canvas.height
   gc.fillStyle = "black"
   gc.fillRect(600,200, 400, 400)
 
@@ -107,7 +120,12 @@ setSKDrawCallback((gc) => {
   textDemo(gc, gc.canvas.width/5, gc.canvas.height - 75, "0")
   textDemo(gc, gc.canvas.width/1.3, gc.canvas.height - 75, "100")
   textDemo(gc, (gc.canvas.width/1.3 + (gc.canvas.width/5 - 10))/2 , gc.canvas.height - 75, "50")
+
+  
 });
+
+
+
 
 
 
