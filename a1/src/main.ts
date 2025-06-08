@@ -22,6 +22,7 @@ type coordinates = {
 };
 
 let mode: "setup" | "play" | "pause" | "end" = "setup";
+let bgc = "black";
 let num_bubbles: number = 6;
 
 let canvas_width = canvasinfo.width;
@@ -71,11 +72,8 @@ setSKDrawCallback((gc) => {
   x_right = { x: center.x + dist, y: center.y + dist };
   y_top = { x: center.x - dist, y: center.y - dist };
 
-  gc.fillStyle = "black";
-  gc.fillRect(600, 200, 400, 400);
-
   gc.save();
-  gc.fillStyle = "black";
+  gc.fillStyle = bgc;
   gc.fillRect(0, 0, gc.canvas.width, gc.canvas.height);
   gc.restore();
 
@@ -221,14 +219,30 @@ const handleEvent = (e: SKEvent) => {
       break;
 
     case "mousedown":
+      let got_hit = false;
       ({x: mx, y: my } = e as SKMouseEvent);
       bubbles_list.list.forEach((b) => {
         if (b.hittest(mx, my)) {
           b.stroke = "yellow";
           b.lineWidth = 3;
+          got_hit = true;
         }
-
       })
+
+      if (!got_hit) {
+        bgc = "midnightblue";
+      }
+      break;
+
+    case "mouseup":
+      ({x: mx, y: my } = e as SKMouseEvent);
+      bubbles_list.list.forEach((b) => {
+        if (b.hittest(mx, my)) {
+          b.stroke = "lightblue";
+          b.lineWidth = 2;
+        }
+      })
+      bgc = "black";
       break;
 
     case "keydown":
