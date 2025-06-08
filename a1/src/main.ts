@@ -205,6 +205,21 @@ const handleEvent = (e: SKEvent) => {
       }
       break;
     
+    case "mousemove":
+      ({x: mx, y: my } = e as SKMouseEvent);
+      bubbles_list.list.forEach((b) => {
+        if (b.hittest(mx, my)) {
+          b.is_hovered = true;
+          b.stroke = "lightblue";
+          b.lineWidth = 2;
+        } else {
+          b.is_hovered = false;
+          b.stroke = "black";
+          b.lineWidth = 1;
+        }
+      });
+      break;
+
     case "mousedown":
       ({x: mx, y: my } = e as SKMouseEvent);
       bubbles_list.list.forEach((b) => {
