@@ -11,6 +11,10 @@ export class DisplayList {
     this.list = this.list.filter((d) => d !== drawable);
   }
 
+  clear() {
+    this.list = [];
+  }
+
   draw(gc: CanvasRenderingContext2D) {
     this.list.forEach((d) => {
       d.draw(gc);

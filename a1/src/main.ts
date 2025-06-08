@@ -5,10 +5,12 @@ import {
   setSKAnimationCallback,
   addSKEventTranslator,
   skTime,
+  SKEvent,
 } from "simplekit/canvas-mode";
 
 import { DisplayList } from "./drawbles/displaylist";
 import { Bubble } from "./drawbles/bubble";
+import { longclickTranslator } from "./translators/longclick";
 const canvasinfo = startSimpleKit();
 
 if (!canvasinfo) throw new Error("simplekit failed");
@@ -33,6 +35,7 @@ let y_top = { x: center.x - dist, y: center.y - dist };
 
 const bubbles_list: DisplayList = new DisplayList();
 const initialize = () => {
+  bubbles_list.clear();
   for (let i = 0; i < num_bubbles; i++) {
     bubbles_list.add(new Bubble({
       x: origin.x + Math.random() * (x_right.x - origin.x) / 2,
@@ -203,3 +206,19 @@ function text(
   gc.fillStyle = "white";
   gc.fillText(text, x, y);
 }
+
+
+addSKEventTranslator(longclickTranslator);
+
+const handleEvent = (e: SKEvent) => {
+  switch (e.type) {
+    case "longclick":
+        if (mode === "setup") {
+          initialize();
+        }
+        break;
+
+    
+  }
+}
+setSKEventListener(handleEvent);
