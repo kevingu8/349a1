@@ -206,6 +206,9 @@ setSKAnimationCallback((time) => {
   click_animator.update(time);
   if (mode === "play") {
     bubbles_list.update(time, g);
+    if (time - bubbles_list.list[0].start_time >= 6000) {
+      mode = "end";
+    }
   }
 })
 

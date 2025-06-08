@@ -10,13 +10,11 @@ export class Bubble extends Circle {
   private x: number = 0;
   private y: number = 0;
   private radius: number = 0;
-  private start_time: number = 0;
-  private x_rel_start: number = 0;
-  private y_rel_start: number = 0;
 
   private x_right: { x: number; y: number } = { x: 0, y: 0 };
   private y_top: { x: number; y: number } = { x: 0, y: 0 };
 
+  start_time: number = 0;
   constructor({
     x_rel = 0,
     y_rel = 0,
@@ -59,81 +57,81 @@ export class Bubble extends Circle {
 
   start(time: number): void {
     this.start_time = time;
-    this.x_rel_start = this.x_rel;
-    this.y_rel_start = this.y_rel;
+    // this.x = this.x_rel;
+    // this.y = this.y_rel;
   }
 
   update(current_time: number, g: number): void {
-    const time = current_time - this.start_time; // Convert to seconds
+    // const time = current_time - this.start_time; // Convert to seconds
     const v = 0.75 * 0.000125 * 2; // relative scaled to /2, multiply back
     const rand = Math.random();
     if (rand <= g) {
       // NE
-      if (this.x < this.x_right.x) {
-        this.x_rel = this.x_rel_start + v * time;
+      if (this.x_rel < 2) {
+        this.x_rel += v;
       }
 
-      if (this.y > this.y_top.y) {
-        this.y_rel = this.y_rel_start + v * time;
+      if (this.y_rel < 2) {
+        this.y_rel += v;
       }
     } else {
       const c = Math.floor((1 - g) * 7) + 1;
       switch (c) {
         case 1:
           // E
-          if (this.x < this.x_right.x) {
-            this.x_rel = this.x_rel_start + v * time;
+          if (this.x_rel < 2) {
+            this.x_rel += v;
           }
           break;
         case 2:
           // SE
-          if (this.x < this.x_right.x) {
-            this.x_rel = this.x_rel_start + v * time;
+          if (this.x_rel < 2) {
+            this.x_rel += v;
           }
           
-          if (this.y < this.y_top.y) {
-            this.y_rel = this.y_rel_start - v * time;
+          if (this.y_rel > 0) {
+            this.y_rel -= v;
           }
           break;
 
         case 3:
           // S
-          if (this.y < this.y_top.y) {
-            this.y_rel = this.y_rel_start - v * time;
+          if (this.y_rel > 0) {
+            this.y_rel -= v;
           }
           break;
 
         case 4:
           // SW
-          if (this.x > this.x_right.x) {
-            this.x_rel = this.x_rel_start - v * time;
+          if (this.x_rel > 0) {
+            this.x_rel -= v;
           }
-          if (this.y < this.y_top.y) {
-            this.y_rel = this.y_rel_start - v * time;
+          if (this.y_rel > 0) {
+            this.y_rel -= v;
           }
           break;
 
         case 5:
           // W
-          if (this.x > this.x_right.x) {
-            this.x_rel = this.x_rel_start - v * time;
+          if (this.x_rel > 0) {
+            this.x_rel = this.x - v;
           }
           break;
 
         case 6:
           // NW
-          if (this.x > this.x_right.x) {
-            this.x_rel = this.x_rel_start - v * time;
+          if (this.x_rel > 0) {
+            this.x_rel = this.x - v;
           }
-          if (this.y > this.y_top.y) {
-            this.y_rel = this.y_rel_start + v * time;
+          if (this.y_rel < 2) {
+            this.y_rel = this.y + v;
           }
           break;
 
         case 7:
           // N
-          if (this.y > this.y_top.y) {
-            this.y_rel = this.y_rel_start + v * time;
+          if (this.y_rel < 2) {
+            this.y_rel = this.y + v;
           }
           break;
       }
