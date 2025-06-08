@@ -78,12 +78,12 @@ setSKDrawCallback((gc) => {
   gc.lineWidth = 2;
   gc.beginPath();
   gc.moveTo(
-    (gc.canvas.width / 1.3 + (gc.canvas.width / 5 - 10)) / 2,
-    gc.canvas.height - 90
+    (x_right.x + origin.x - 10)/2,
+    origin.y
   );
   gc.lineTo(
-    (gc.canvas.width / 1.3 + (gc.canvas.width / 5 - 10)) / 2,
-    gc.canvas.height - 100
+    (x_right.x + origin.x - 10)/2,
+    origin.y + 10
   );
   gc.closePath();
 
@@ -96,8 +96,8 @@ setSKDrawCallback((gc) => {
   gc.strokeStyle = "white";
   gc.lineWidth = 2;
   gc.beginPath();
-  gc.moveTo(gc.canvas.width / 1.3, gc.canvas.height - 100);
-  gc.lineTo(gc.canvas.width / 1.3, gc.canvas.height - 90);
+  gc.moveTo(x_right.x, x_right.y);
+  gc.lineTo(x_right.x, x_right.y + 10);
   gc.closePath();
 
   gc.stroke();
@@ -110,12 +110,12 @@ setSKDrawCallback((gc) => {
   gc.lineWidth = 2;
   gc.beginPath();
   gc.moveTo(
-    gc.canvas.width / 5,
-    (gc.canvas.height - 90 + gc.canvas.height / 7) / 2
+    origin.x,
+    (origin.y + y_top.y) / 2
   );
   gc.lineTo(
-    gc.canvas.width / 5 - 10,
-    (gc.canvas.height - 90 + gc.canvas.height / 7) / 2
+    origin.x - 10,
+    (origin.y + y_top.y) / 2
   );
   gc.closePath();
 
@@ -127,27 +127,28 @@ setSKDrawCallback((gc) => {
   gc.strokeStyle = "white";
   gc.lineWidth = 2;
   gc.beginPath();
-  gc.moveTo(gc.canvas.width / 5, gc.canvas.height / 7);
-  gc.lineTo(gc.canvas.width / 5 - 10, gc.canvas.height / 7);
+  gc.moveTo(origin.x, y_top.y);
+  gc.lineTo(origin.x - 10, y_top.y);
   gc.closePath();
 
   gc.stroke();
   gc.restore();
 
-  textDemo(gc, gc.canvas.width / 5 - 25, gc.canvas.height / 7, "100");
+  textDemo(gc, x_right.x, x_right.y + 25, "100");
   textDemo(
     gc,
-    gc.canvas.width / 5 - 25,
-    (gc.canvas.height - 90 + gc.canvas.height / 7) / 2,
+    (x_right.x + origin.x - 10)/2,
+    origin.y + 25,
     "50"
   );
-  textDemo(gc, gc.canvas.width / 5, gc.canvas.height - 75, "0");
-  textDemo(gc, gc.canvas.width / 1.3, gc.canvas.height - 75, "100");
+  textDemo(gc, origin.x - 25, origin.y, "0");
+  textDemo(gc, origin.x, origin.y + 25, "0")
+  textDemo(gc, origin.x - 25,
+    (origin.y + y_top.y) / 2, "50");
   textDemo(
     gc,
-    (gc.canvas.width / 1.3 + (gc.canvas.width / 5 - 10)) / 2,
-    gc.canvas.height - 75,
-    "50"
+    origin.x - 25, y_top.y,
+    "100"
   );
 });
 
