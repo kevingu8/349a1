@@ -88,4 +88,8 @@ export class Bubble extends Circle {
         }
         
     }
+
+    hittest(mx:number, my:number) {
+        
+    }
 }

@@ -206,12 +206,13 @@ const handleEvent = (e: SKEvent) => {
       const { key } = e as KeyboardEvent;
       switch (key) {
         case "Enter":
+          if (mode === "end" || mode === "setup")
           mode = "setup";
           initialize();
           break;
 
         case "Escape":
-          if (mode === "end" || mode === "setup") {
+          if (mode === "end" || mode === "setup" || mode === "play") {
             mode = "setup";
             initialize();
           }
