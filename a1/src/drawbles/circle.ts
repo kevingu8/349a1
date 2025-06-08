@@ -1,3 +1,4 @@
+import { insideHitTestCircle } from "../hittest/hittest";
 import { Drawable } from "./drawable";
 
 export type CircleProps = {
@@ -37,6 +38,9 @@ export class Circle implements Drawable {
   fill: string;
   stroke: string;
   lineWidth: number;
+  private x: number = 0;
+  private y: number = 0;
+  private radius: number = 0;
 
   get_info(gc: CanvasRenderingContext2D) {
     const margin = 50;
@@ -57,6 +61,10 @@ export class Circle implements Drawable {
 
   draw(gc: CanvasRenderingContext2D) {
     const { x, y, radius } = this.get_info(gc);
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    
     gc.beginPath();
     if (this.fill) gc.fillStyle = this.fill;
     if (this.stroke) gc.strokeStyle = this.stroke;
@@ -70,5 +78,9 @@ export class Circle implements Drawable {
     );
     if (this.fill) gc.fill();
     if (this.lineWidth) gc.stroke();
+  }
+
+  hittest(mx:number, my:number): boolean {
+    return insideHitTestCircle(mx, my, this.x, this.y, this.radius);
   }
 }

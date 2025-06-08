@@ -1,4 +1,3 @@
-import { insideHitTestCircle } from '../hittest/hittest.js';
 import { Circle, CircleProps } from './circle.js';
 
 type BubbleProps = CircleProps & { is_hovered?: boolean, index?: number };
@@ -6,9 +5,6 @@ type BubbleProps = CircleProps & { is_hovered?: boolean, index?: number };
 export class Bubble extends Circle {
     is_hovered: boolean = true;
     index: number = 0;
-    private x: number = 0;
-    private y: number = 0;
-    private radius: number = 0;
 
     constructor({
         x_rel = 0,
@@ -26,9 +22,6 @@ export class Bubble extends Circle {
     draw(gc: CanvasRenderingContext2D): void {
         // Get the absolute position and radius
         const { x, y, radius } = this.get_info(gc);
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
 
         // Draw the index number above the circle (if hover)
         if (this.is_hovered) {
@@ -96,9 +89,5 @@ export class Bubble extends Circle {
             }
         }
         
-    }
-
-    hittest(mx:number, my:number): boolean {
-        return insideHitTestCircle(mx, my, this.x, this.y, this.radius);
     }
 }
