@@ -90,7 +90,7 @@ export class Bubble extends Circle {
         
     }
 
-    hittest(mx:number, my:number) {
-        
+    hittest(mx:number, my:number): boolean {
+        const r = scaling(this.r_theta_0 + this.r_delta_)
     }
 }

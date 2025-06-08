@@ -201,6 +201,9 @@ const handleEvent = (e: SKEvent) => {
         mode = "pause";
       }
       break;
+    
+      case "mousedown":
+        
 
     case "keydown":
       const { key } = e as KeyboardEvent;
@@ -225,6 +228,7 @@ const handleEvent = (e: SKEvent) => {
             mode = "pause";
           }
           break;
+          
       }
       if (mode === "setup") {
         switch (key) {
@@ -257,6 +261,7 @@ const handleEvent = (e: SKEvent) => {
             break;
         }
       }
+
   }
 };
 setSKEventListener(handleEvent);
