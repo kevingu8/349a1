@@ -24,19 +24,92 @@ setSKDrawCallback((gc) => {
   gc.textAlign = "center";
   gc.textBaseline = "middle";
   gc.fillStyle = "White"
-  gc.fillText("click anywhere to start", gc.canvas.width/2, 50)
+  gc.fillText("click anywhere to start", gc.canvas.width/2, 25)
 
-  // demos
-  // rectangleDemo(gc);
-  // pathDemo(gc);
-  // pathHouseDemo(gc);
-  // colourDemo(gc);
-  // saveStateDemo(gc);
-  // fpsDemo(gc);
+  // x axis
+  gc.save();
+  gc.strokeStyle = "white"
+  gc.lineWidth = 2;
+  gc.beginPath();
+  gc.moveTo(gc.canvas.width/5 - 10, gc.canvas.height - 100);
+  gc.lineTo(gc.canvas.width/1.3 , gc.canvas.height - 100);
+  gc.closePath();
+
+  gc.stroke();
+  gc.restore();
+
+  // y axis
+  gc.save();
+  gc.strokeStyle = "white"
+  gc.lineWidth = 2;
+  gc.beginPath();
+  gc.moveTo(gc.canvas.width/5, gc.canvas.height - 90);
+  gc.lineTo(gc.canvas.width/5 , gc.canvas.height/7);
+  gc.closePath();
+
+  gc.stroke();
+  gc.restore();
+
+  // middle tick on x axis
+
+  gc.save();
+  gc.strokeStyle = "white"
+  gc.lineWidth = 2;
+  gc.beginPath();
+  gc.moveTo((gc.canvas.width/1.3 + (gc.canvas.width/5 - 10))/2, gc.canvas.height - 90);
+  gc.lineTo((gc.canvas.width/1.3 + (gc.canvas.width/5 - 10))/2 , gc.canvas.height - 100);
+  gc.closePath();
+
+  gc.stroke();
+  gc.restore();
+
+  // last tick on x axis
+
+  gc.save();
+  gc.strokeStyle = "white"
+  gc.lineWidth = 2;
+  gc.beginPath();
+  gc.moveTo(gc.canvas.width/1.3, gc.canvas.height - 100);
+  gc.lineTo(gc.canvas.width/1.3, gc.canvas.height - 90);
+  gc.closePath();
+
+  gc.stroke();
+  gc.restore();
+
+  // first tick on y axis
+
+  gc.save();
+  gc.strokeStyle = "white"
+  gc.lineWidth = 2;
+  gc.beginPath();
+  gc.moveTo(gc.canvas.width/5, (gc.canvas.height - 90 + (gc.canvas.height/7))/2);
+  gc.lineTo(gc.canvas.width/5 - 10, (gc.canvas.height - 90 + (gc.canvas.height/7))/2);
+  gc.closePath();
+
+  gc.stroke();
+  gc.restore();
+
+  // last tick on y axis
+  gc.save();
+  gc.strokeStyle = "white"
+  gc.lineWidth = 2;
+  gc.beginPath();
+  gc.moveTo(gc.canvas.width/5, gc.canvas.height/7);
+  gc.lineTo(gc.canvas.width/5 - 10, gc.canvas.height/7);
+  gc.closePath();
+
+  gc.stroke();
+  gc.restore();
+
+
+  textDemo(gc, gc.canvas.width/5 - 25, gc.canvas.height/7, "100")
+  textDemo(gc, gc.canvas.width/5 - 25, (gc.canvas.height - 90 + (gc.canvas.height/7))/2, "50")
+  textDemo(gc, gc.canvas.width/5, gc.canvas.height - 75, "0")
+  textDemo(gc, gc.canvas.width/1.3, gc.canvas.height - 75, "100")
+  textDemo(gc, (gc.canvas.width/1.3 + (gc.canvas.width/5 - 10))/2 , gc.canvas.height - 75, "50")
 });
 
 
-//#region rectangleDemo
 
 function rectangleDemo(gc: CanvasRenderingContext2D) {
   gc.fillStyle = "red";
@@ -95,10 +168,7 @@ function pathDemo(gc: CanvasRenderingContext2D) {
 //#region textDemo
 // textDemo shows how to draw text with different styles
 
-function textDemo(gc: CanvasRenderingContext2D) {
-  const x = 800;
-  const y = 350;
-
+function textDemo(gc: CanvasRenderingContext2D, x: number, y: number, text: string) {
   // string uses same style as CSS font property
   gc.font = "12pt sans-serif";
   // // standard alignment
@@ -111,7 +181,7 @@ function textDemo(gc: CanvasRenderingContext2D) {
   gc.textAlign = "center";
   gc.textBaseline = "middle";
   gc.fillStyle = "white";
-  gc.fillText("click anywhere to start", x, y);
+  gc.fillText(text, x, y);
 
 }
 
