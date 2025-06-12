@@ -27,7 +27,7 @@ export class DisplayList {
       d.start(time);
     });
   }
-  
+
   update(time: number, g: number) {
     this.list.forEach((d) => {
       d.update(time, g);
